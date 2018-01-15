@@ -11,8 +11,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class ApiDocsLoginPage extends ApiDocsAbstractPage {
-   // private WebElement apiList;
-
+  
     @FindBy(name = "IDToken1")
     private List<WebElement> username;
 
