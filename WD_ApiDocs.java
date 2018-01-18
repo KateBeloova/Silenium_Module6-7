@@ -3,20 +3,19 @@ package Homework;
 
 import Homework.pagefactory.ApiDocsLoginPage;
 import Homework.pagefactory.ApiDocsMainPage;
-import org.openqa.selenium.By;
+import Homework.pagefactory.RequestDocsPage;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Wait;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.Assert;
+import org.openqa.selenium.support.FindBy;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import java.util.concurrent.TimeUnit;
+
+import static org.testng.Assert.assertTrue;
 
 public class WD_ApiDocs {
 
@@ -30,6 +29,11 @@ public class WD_ApiDocs {
         private static final String PASSWORD = "Secret123";
         private static final String NEWS_LINK = "//a[@class='category-api-item ng-binding'][contains(text(),'/news-subscriptions')]";
 
+
+    private static final String API_LINK = "//a[@class='category-api-item ng-binding'][contains(text(),'/news-subscriptions')]";
+
+    @FindBy(xpath = API_LINK)
+    private WebElement apiLink;
 
         private WebDriver driver;
 
@@ -48,17 +52,22 @@ public class WD_ApiDocs {
 
         @Test(description = "Start browser", priority = 1)
         public void LogintoApiDocs() throws InterruptedException {
-            boolean isResultDisplayed = new ApiDocsLoginPage(driver).EnterCredentials(LOGIN,PASSWORD).isSearchItemDisplayed();
-            Assert.assertTrue(isResultDisplayed, "No required search result element on the page!");
-            System.out.println("WebDriver java binding is available in maven central repository.");
 
+            ApiDocsLoginPage apiDocsLogin = new ApiDocsLoginPage(driver);
+            apiDocsLogin.EnterCredentials("emqa16@thomsonreuters.com","Secret123");
+
+            ApiDocsMainPage apiDocsMainPage = apiDocsLogin.submit();
+            assertTrue(apiDocsMainPage.isSearchItemDisplayed());
         }
 
-        @Test(description = "Sent request to Docs API", priority = 2)
+        @Test(description = "Sent request to Docs API", priority = 2,enabled = false)
         public void DocsReq() throws InterruptedException {
-            boolean isApiDisplayed = new ApiDocsMainPage(driver).DocsRequest(DOCSAPI).isButtonDisplayed();
-            Assert.assertTrue(isApiDisplayed, "No required search result element on the page!");
-            System.out.println("WebDriver java binding is available in maven central repository.");
+
+            ApiDocsMainPage apiDocsMainPage= new ApiDocsMainPage(driver);
+            apiDocsMainPage.DocsRequest(DOCSAPI);
+
+            RequestDocsPage requestDocsPage = new RequestDocsPage(driver);
+            assertTrue(requestDocsPage.isButtonDisplayed());
         }
 
         @AfterClass(description = "Stop Browser", enabled = false)

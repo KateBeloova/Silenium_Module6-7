@@ -14,10 +14,10 @@ public class ApiDocsLoginPage extends ApiDocsAbstractPage {
    // private WebElement apiList;
 
     @FindBy(name = "IDToken1")
-    private List<WebElement> username;
+    private WebElement username;
 
     @FindBy(name = "IDToken2")
-    private List<WebElement> password;
+    private WebElement password;
 
     @FindBy(xpath = "//div[@class='button_img button_75 button_75_enabled'][contains(text(),'Sign In')]")
     private WebElement tryBtn;
@@ -26,14 +26,16 @@ public class ApiDocsLoginPage extends ApiDocsAbstractPage {
         super(driver);
     }
 
-    public ApiDocsMainPage EnterCredentials(String Login, String Password) throws InterruptedException {
+    public void EnterCredentials(String Login, String Password) throws InterruptedException {
 
-        highlightElement(username.get(0));
-        username.get(0).clear();
-        username.get(0).sendKeys(Login);
-        highlightElement(password.get(0));
-        password.get(0).clear();
-        password.get(0).sendKeys(Password);
+        this.username.clear();
+        this.username.sendKeys(Login);
+
+        this.password.clear();
+        this.password.sendKeys(Password);
+   }
+
+    public ApiDocsMainPage submit (){
         tryBtn.click();
         tryBtn.click();
 

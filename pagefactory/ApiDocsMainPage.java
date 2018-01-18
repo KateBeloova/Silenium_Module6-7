@@ -15,27 +15,23 @@ public class ApiDocsMainPage extends ApiDocsAbstractPage{
     private static final String API_LINK = "//a[@class='category-api-item ng-binding'][contains(text(),'/news-subscriptions')]";
 
     @FindBy(xpath = API_LINK)
-    private List<WebElement> apiLink;
+    private WebElement apiLink;
 
     @FindBy(xpath = "//a[@class='category-api-item ng-binding'][contains(text(),'/definitions')]")
     private WebElement apiList;
-
 
     public ApiDocsMainPage(WebDriver driver) {
         super(driver);
     }
 
     public boolean isSearchItemDisplayed() {
-        new WebDriverWait(driver, 5).until(ExpectedConditions.visibilityOfAllElements(apiLink));
-        return apiList.isDisplayed();
+        new WebDriverWait(driver, 50).until(ExpectedConditions.visibilityOf(apiLink));
+        return apiLink.isDisplayed();
     }
 
-    public RequestDocsPage DocsRequest(String apiName){
+    public void DocsRequest(String apiName){
 
-        //Choose first endpoint
         highlightElement(apiList);
-        apiList.click();
-
-        return new RequestDocsPage(driver) ;
+        this.apiList.click();
     }
 }
